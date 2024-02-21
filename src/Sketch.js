@@ -44,7 +44,20 @@ const Sketch = ({
         ratio = window.devicePixelRatio
 
         return () => {
-            gl.getExtension('WEBGL_lose_context').loseContext()
+            // Destroy WebGL context
+            if (gl) {
+                const loseContextExtension = gl.getExtension('WEBGL_lose_context');
+                if (loseContextExtension) {
+                    console.debug("removed context for 3d")
+                    loseContextExtension.loseContext();
+                }
+            }
+
+            // Remove canvas from DOM
+            if (canvas && canvas.parentNode) {
+                console.debug("removed canvas for 3d")
+                canvas.parentNode.removeChild(canvas);
+            }
         }
     }, [])
 

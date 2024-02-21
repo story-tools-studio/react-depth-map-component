@@ -15,6 +15,7 @@ export interface ImageDepthMapProps {
     rotationCoefY?: number
     rotationAmountX?: number
     rotationAmountY?: number
+    onPermissionChange?: (permission: string) => void
 }
 
 export default class ImageDepthMap extends React.Component<ImageDepthMapProps, any> {

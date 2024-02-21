@@ -16,6 +16,7 @@ const ImageDepthMap = ({
   rotationAmountX = 18,
   rotationAmountY = 18,
   style,
+  onPermissionChange,
 }) => {
   const containerRef = useRef()
   const [preloadedImages, setPreloadedImages] = useState(false);
@@ -52,6 +53,12 @@ const ImageDepthMap = ({
     }
   }
 
+  const handlePermissionChange = (status) => {
+    if(onPermissionChange){
+      onPermissionChange(status);
+    }
+  }
+
   return (
     <div ref={containerRef} className={`image-DepthMap${className ? ' ' + className : ''}`} style={style ? style : {}}>
       {preloadedImages ? <Sketch
@@ -67,6 +74,7 @@ const ImageDepthMap = ({
         rotationCoefY={rotationCoefY}
         rotationAmountX={rotationAmountX}
         rotationAmountY={rotationAmountY}
+        onPermissionChange={handlePermissionChange}
       /> : (
         <Loader />
       )}

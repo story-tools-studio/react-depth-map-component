@@ -19,6 +19,7 @@ const Sketch = ({
     rotationCoefY,
     rotationAmountX,
     rotationAmountY,
+    onPermissionChange,
 }) => {
     let imageAspect = 1
     let mouseX = 0
@@ -207,10 +208,14 @@ const Sketch = ({
             .then(permissionState => {
                 if (permissionState === 'granted') {
                     window.addEventListener('devicemotion', deviceMove)
+                    onPermissionChange("granted")
+                }else{
+                    onPermissionChange("denied")
                 }
             })
             .catch(e => {
                 window.addEventListener('mousemove', mouseMove)
+                onPermissionChange("denied")
             })
         container.removeEventListener('touchstart', getPermission)
     }

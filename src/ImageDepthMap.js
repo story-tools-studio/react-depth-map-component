@@ -92,7 +92,7 @@ const Loader = () => {
         height: "150px",
         width: "150px",
       }}>
-        <g fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="6">
+        <g fill="none" stroke="#fff" strokeLinecap="round" strokeLinejoin="round" strokeWidth="6">
           <path d="M 21 40 V 59">
             <animateTransform
                 attributeName="transform"

@@ -3,6 +3,7 @@ import {isMobile} from 'react-device-detect'
 import fragment from 'raw-loader!glslify-loader!./shaders/fragment.glsl'
 import vertex from 'raw-loader!glslify-loader!./shaders/vertex.glsl'
 import GyroNorm from './lib/gyronorm'
+import isMobile from 'is-mobile'
 
 const gn = new GyroNorm.GyroNorm()
 
@@ -294,8 +295,9 @@ const Sketch = ({
         const currentTime = (now - startTime) / 1000
         uTime.set(currentTime)
         // inertia
-        const nMX = mouseX + ((mouseTargetX - mouseX) * 0.05)
-        const nMY = mouseY + ((mouseTargetY - mouseY) * 0.05)
+        // adding a little inertia to mobile movement
+        const nMX = mouseX + ((mouseTargetX - mouseX) * isMobile({tablet: true}) ? 1 : 0.05)
+        const nMY = mouseY + ((mouseTargetY - mouseY) * isMobile({tablet: true}) ? 1 : 0.05)
         mouseX = nMX
         mouseY = nMY
         uMouse.set(nMX, nMY)

@@ -1,6 +1,6 @@
 {
     "name": "react-depth-map-component",
-    "version": "1.3.44",
+    "version": "1.3.45",
     "description": "React Component to implement depth maps",
     "main": "./lib/ImageDepthMapComponent.js",
     "author": "Giorgi Batiashvili  <giorgi.batiashvili@gmail.com>",
@@ -33,6 +33,7 @@
     },
     "dependencies": {
         "glslify-loader": "^2.0.0",
+        "is-mobile": "^4.0.0",
         "raw-loader": "^4.0.1"
     }
 }

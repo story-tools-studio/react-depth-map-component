@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useState} from 'react'
-import {isMobile} from 'react-device-detect'
+import {isMobile as isMobilePack} from 'react-device-detect'
 import fragment from 'raw-loader!glslify-loader!./shaders/fragment.glsl'
 import vertex from 'raw-loader!glslify-loader!./shaders/vertex.glsl'
 import GyroNorm from './lib/gyronorm'
@@ -88,7 +88,7 @@ const Sketch = ({
     useEffect(() => {
         setTimeout(() => {
             if (respondTo === 'mouseMove') {
-                if (isMobile) {
+                if (isMobilePack) {
                     if (typeof DeviceMotionEvent.requestPermission === 'function') {
                         container.addEventListener('touchstart', getPermission)
                     } else {
@@ -103,7 +103,7 @@ const Sketch = ({
         }, 50);
         return () => {
             if (respondTo === 'mouseMove') {
-                if (isMobile) {
+                if (isMobilePack) {
                     window.removeEventListener('devicemotion', deviceMove)
                 } else {
                     window.removeEventListener('mousemove', mouseMove)

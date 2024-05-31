@@ -1,9 +1,8 @@
 import React, {useCallback, useEffect, useState} from 'react'
-import {isMobile as isMobilePack} from 'react-device-detect'
+import { isMobile } from 'react-device-detect'
 import fragment from 'raw-loader!glslify-loader!./shaders/fragment.glsl'
 import vertex from 'raw-loader!glslify-loader!./shaders/vertex.glsl'
 import GyroNorm from './lib/gyronorm'
-import isMobile from 'is-mobile'
 
 const gn = new GyroNorm.GyroNorm()
 
@@ -88,7 +87,7 @@ const Sketch = ({
     useEffect(() => {
         setTimeout(() => {
             if (respondTo === 'mouseMove') {
-                if (isMobilePack) {
+                if (isMobile) {
                     if (typeof DeviceMotionEvent.requestPermission === 'function') {
                         container.addEventListener('touchstart', getPermission)
                     } else {
@@ -103,7 +102,7 @@ const Sketch = ({
         }, 50);
         return () => {
             if (respondTo === 'mouseMove') {
-                if (isMobilePack) {
+                if (isMobile) {
                     window.removeEventListener('devicemotion', deviceMove)
                 } else {
                     window.removeEventListener('mousemove', mouseMove)
@@ -296,8 +295,8 @@ const Sketch = ({
         uTime.set(currentTime)
         // inertia
         // adding a little inertia to mobile movement
-        const nMX = mouseX + ((mouseTargetX - mouseX) * isMobile({tablet: true}) ? 1 : 0.05)
-        const nMY = mouseY + ((mouseTargetY - mouseY) * isMobile({tablet: true}) ? 1 : 0.05)
+        const nMX = mouseX + ((mouseTargetX - mouseX) * (isMobile ? 1 : 0.05))
+        const nMY = mouseY + ((mouseTargetY - mouseY) * (isMobile ? 1 : 0.05))
         mouseX = nMX
         mouseY = nMY
         uMouse.set(nMX, nMY)

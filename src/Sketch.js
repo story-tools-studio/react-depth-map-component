@@ -295,8 +295,8 @@ const Sketch = ({
         uTime.set(currentTime)
         // inertia
         // adding a little inertia to mobile movement
-        const nMX = mouseX + ((mouseTargetX - mouseX) * (isMobile ? 0.5 : 0.05))
-        const nMY = mouseY + ((mouseTargetY - mouseY) * (isMobile ? 0.5 : 0.05))
+        const nMX = mouseX + ((mouseTargetX - mouseX) * (isMobile ? 0.3 : 0.05))
+        const nMY = mouseY + ((mouseTargetY - mouseY) * (isMobile ? 0.3 : 0.05))
         mouseX = nMX
         mouseY = nMY
         uMouse.set(nMX, nMY)

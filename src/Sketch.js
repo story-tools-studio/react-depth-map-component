@@ -40,7 +40,7 @@ const Sketch = ({
     useEffect(() => {
         canvas = document.createElement('canvas')
         container.appendChild(canvas)
-        gl = canvas.getContext('webgl')
+        gl = canvas.getContext('webgl', { depth: true, alpha: false, antialias: true })
         startTime = new Date().getTime() // Get start time for animating
         ratio = window.devicePixelRatio
 

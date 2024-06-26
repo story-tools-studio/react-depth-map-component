@@ -1,5 +1,5 @@
-import React, {useCallback, useEffect, useState} from 'react'
-import {isIOS, isMobile} from 'react-device-detect'
+import React, { useCallback, useEffect, useState } from 'react'
+import { isIOS, isMobile } from 'react-device-detect'
 import fragment from 'raw-loader!glslify-loader!./shaders/fragment.glsl'
 import vertex from 'raw-loader!glslify-loader!./shaders/vertex.glsl'
 import GyroNorm from './lib/gyronorm'
@@ -36,6 +36,9 @@ const Sketch = ({
     let billboard
     let u_image0Location
     let u_image1Location
+
+    const [initialGyroX, setInitialGyroX] = useState(null);
+    const [initialGyroY, setInitialGyroY] = useState(null);
 
     useEffect(() => {
         canvas = document.createElement('canvas')
@@ -114,7 +117,7 @@ const Sketch = ({
     }, [])
 
     useEffect(() => {
-        if(imageOriginal && imageDepth){
+        if (imageOriginal && imageDepth) {
             start([imageOriginal, imageDepth]);
         }
     }, [imageOriginal, imageDepth])
@@ -209,7 +212,7 @@ const Sketch = ({
                 if (permissionState === 'granted') {
                     window.addEventListener('devicemotion', deviceMove)
                     onPermissionChange("granted")
-                }else{
+                } else {
                     onPermissionChange("denied")
                 }
             })
@@ -224,12 +227,21 @@ const Sketch = ({
         const maxTiltX = rotationAmountX
         const maxTiltY = rotationAmountY
 
-        gn.init({gravityNormalized: useGravity}).then(() => {
+        gn.init({ gravityNormalized: useGravity }).then(() => {
             gn.start(data => {
-                const y = data.do.gamma * rotationCoefY
-                const x = data.do.beta * rotationCoefX
-                mouseTargetY = clamp(x, -maxTiltX, maxTiltX) / maxTiltX
-                mouseTargetX = -clamp(y, -maxTiltY, maxTiltY) / maxTiltY
+                const y = data.do.gamma * rotationCoefY;
+                const x = data.do.beta * rotationCoefX;
+
+                if (initialGyroX === null && initialGyroY === null) {
+                    setInitialGyroX(x);
+                    setInitialGyroY(y);
+                }
+
+                const adjustedX = x - initialGyroX;
+                const adjustedY = y - initialGyroY;
+
+                mouseTargetY = clamp(adjustedX, -maxTiltX, maxTiltX) / maxTiltX;
+                mouseTargetX = -clamp(adjustedY, -maxTiltY, maxTiltY) / maxTiltY;
 
             })
         }).catch(e => {
@@ -238,14 +250,18 @@ const Sketch = ({
     }
 
     const deviceMove = e => {
-        const maxTiltX = rotationAmountX
-        const maxTiltY = rotationAmountY
-        const rotation = e.rotationRate || null
+        const maxTiltX = rotationAmountX;
+        const maxTiltY = rotationAmountY;
+        const rotation = e.rotationRate || null;
 
-        const y = rotation.gamma * rotationCoefY
-        const x = rotation.beta * rotationCoefX
-        mouseTargetY = clamp(x, -maxTiltX, maxTiltX) / maxTiltX
-        mouseTargetX = -clamp(y, -maxTiltY, maxTiltY) / maxTiltY
+        const y = rotation.gamma * rotationCoefY;
+        const x = rotation.beta * rotationCoefX;
+
+        const adjustedX = x - initialGyroX;
+        const adjustedY = y - initialGyroY;
+
+        mouseTargetY = clamp(adjustedX, -maxTiltX, maxTiltX) / maxTiltX;
+        mouseTargetX = -clamp(adjustedY, -maxTiltY, maxTiltY) / maxTiltY;
     }
 
     const mouseMove = e => {

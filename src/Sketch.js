@@ -36,9 +36,8 @@ const Sketch = ({
     let billboard
     let u_image0Location
     let u_image1Location
-
-    const [initialGyroX, setInitialGyroX] = useState(null);
-    const [initialGyroY, setInitialGyroY] = useState(null);
+    let initialGyroX = 0;
+    let initialGyroY = 0;
 
     useEffect(() => {
         canvas = document.createElement('canvas')
@@ -232,9 +231,9 @@ const Sketch = ({
                 const y = data.do.gamma * rotationCoefY;
                 const x = data.do.beta * rotationCoefX;
 
-                if (initialGyroX === null && initialGyroY === null) {
-                    setInitialGyroX(x);
-                    setInitialGyroY(y);
+                if (initialGyroX === 0 && initialGyroY === 0) {
+                    initialGyroX = x;
+                    initialGyroY = y;
                 }
 
                 const adjustedX = x - initialGyroX;

@@ -10,8 +10,8 @@
     },
     "homepage": "https://github.com/story-tools-studio/react-depth-map-component#readme",
     "scripts": {
-        "build": "webpack",
-        "start": "webpack --watch",
+        "build": "NODE_OPTIONS=--openssl-legacy-provider webpack",
+        "start": "NODE_OPTIONS=--openssl-legacy-provider webpack --watch",
         "release": "standard-version"
     },
     "typings": "index.d.ts",

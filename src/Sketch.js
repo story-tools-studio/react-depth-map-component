@@ -91,10 +91,14 @@ const Sketch = ({
             if (respondTo === 'mouseMove') {
                 if (isMobile) {
                     if (typeof DeviceMotionEvent.requestPermission === 'function') {
+                        // iOS: need user gesture to grant permission for devicemotion
                         container.addEventListener('touchstart', getPermission)
-                    } else {
-                        window.addEventListener('devicemotion', deviceMove)
                     }
+                    // Android: gyro() already handles orientation via GyroNorm
+                    // (which uses deviceorientation — absolute tilt angles).
+                    // Do NOT also register devicemotion/deviceMove here — it uses
+                    // rotationRate (angular velocity, not position) and fights
+                    // with gyro(), causing erratic movement on Android.
                 } else {
                     window.addEventListener('mousemove', mouseMove)
                 }
@@ -104,9 +108,7 @@ const Sketch = ({
         }, 50);
         return () => {
             if (respondTo === 'mouseMove') {
-                if (isMobile) {
-                    window.removeEventListener('devicemotion', deviceMove)
-                } else {
+                if (!isMobile) {
                     window.removeEventListener('mousemove', mouseMove)
                 }
             } else {
@@ -310,8 +312,8 @@ const Sketch = ({
         uTime.set(currentTime)
         // inertia
         // adding a little inertia to mobile movement
-        const nMX = mouseX + ((mouseTargetX - mouseX) * (isIOS ? 0.2 : isMobile ? 1 : 0.05))
-        const nMY = mouseY + ((mouseTargetY - mouseY) * (isIOS ? 0.2 : isMobile ? 1 : 0.05))
+        const nMX = mouseX + ((mouseTargetX - mouseX) * (isMobile ? 0.2 : 0.05))
+        const nMY = mouseY + ((mouseTargetY - mouseY) * (isMobile ? 0.2 : 0.05))
         mouseX = nMX
         mouseY = nMY
         uMouse.set(nMX, nMY)

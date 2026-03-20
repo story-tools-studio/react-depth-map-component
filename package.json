@@ -16,7 +16,7 @@
     },
     "typings": "index.d.ts",
     "peerDependencies": {
-        "react": "^16.9.0"
+        "react": ">=16.9.0"
     },
     "devDependencies": {
         "@babel/core": "^7.10.5",

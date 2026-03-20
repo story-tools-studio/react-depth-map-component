@@ -67,7 +67,7 @@ const Sketch = ({
     useEffect(() => {
         if (gl) {
             createScene()
-            gyro()
+            isMobile && gyro()
         }
     }, [gl])
 
